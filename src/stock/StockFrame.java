@@ -24,6 +24,7 @@ public class StockFrame extends javax.swing.JFrame {
         //
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        
 
     }
     @SuppressWarnings("unchecked")
@@ -101,30 +102,30 @@ public class StockFrame extends javax.swing.JFrame {
         lblStockCount.setText("Stok :");
 
         btnAdd.setText("Ekle");
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAddMouseClicked(evt);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
             }
         });
 
         btnDelete.setText("Sil");
-        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnDeleteMouseClicked(evt);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
             }
         });
 
         btnUpdate.setText("Güncelle");
-        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseClicked(evt);
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
             }
         });
 
         btnLogOut.setText("Çıkış Yap");
-        btnLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnLogOutMouseClicked(evt);
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
             }
         });
 
@@ -140,30 +141,25 @@ public class StockFrame extends javax.swing.JFrame {
                             .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblProductName)
-                                            .addComponent(lblStockCount))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtStockCount, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblProductCode)
-                                            .addComponent(jLabel1))
-                                        .addGap(3, 3, 3)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(6, 6, 6))
+                                    .addComponent(lblProductName)
+                                    .addComponent(lblStockCount))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtStockCount, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblProductCode)
+                                    .addComponent(jLabel1))
+                                .addGap(3, 3, 3)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtProductCode, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnLogOut))
+                            .addComponent(btnLogOut)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -241,36 +237,7 @@ public class StockFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblStockMouseClicked
 
-    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        if (selectedID >= 0) {
-            DbHelper dbHelper = new DbHelper();
-            Connection connection = null;
-            PreparedStatement statement = null;
-            try {
-                connection = dbHelper.getConnection();
-                statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
-                statement.setInt(1, selectedID);
-                if (statement.executeUpdate() == 1){
-                    lblStatus.setText(selectedID + " ID'li öğe silindi!");
-                    log("PRODUCT_DELETE", userName);
-                }
-            } catch (SQLException exception) {
-                lblStatus.setText(selectedID + " ID'li öğe silinemedi! Hata :" + exception.getMessage());
-                dbHelper.showErrorMessage(exception, "DeleteQuery");
-            } finally {
-                try {
-                    statement.close();
-                    connection.close();
-                } catch (SQLException ex) {
-                    //
-                }
-               getList();
-               clearData();
-            }
-        }
-    }//GEN-LAST:event_btnDeleteMouseClicked
-
-    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         String productCode = txtProductCode.getText();
         String productName = txtProductName.getText();
         int productStockCount;
@@ -309,9 +276,38 @@ public class StockFrame extends javax.swing.JFrame {
             getList();
             clearData();
         }
-    }//GEN-LAST:event_btnAddMouseClicked
+    }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if (selectedID >= 0) {
+            DbHelper dbHelper = new DbHelper();
+            Connection connection = null;
+            PreparedStatement statement = null;
+            try {
+                connection = dbHelper.getConnection();
+                statement = connection.prepareStatement("DELETE FROM stock WHERE id = ?");
+                statement.setInt(1, selectedID);
+                if (statement.executeUpdate() == 1){
+                    lblStatus.setText(selectedID + " ID'li öğe silindi!");
+                    log("PRODUCT_DELETE", userName);
+                }
+            } catch (SQLException exception) {
+                lblStatus.setText(selectedID + " ID'li öğe silinemedi! Hata :" + exception.getMessage());
+                dbHelper.showErrorMessage(exception, "DeleteQuery");
+            } finally {
+                try {
+                    statement.close();
+                    connection.close();
+                } catch (SQLException ex) {
+                    //
+                }
+               getList();
+               clearData();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (selectedID >= 0) {
             String productCode = txtProductCode.getText();
             String productName = txtProductName.getText();
@@ -353,10 +349,10 @@ public class StockFrame extends javax.swing.JFrame {
                 clearData();
             }
         }
-    }//GEN-LAST:event_btnUpdateMouseClicked
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogOutMouseClicked
-        clearData();
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+       clearData();
         model = (DefaultTableModel) tblStock.getModel();
         if (cacheData != null) {
             cacheData.removeAll(cacheData);
@@ -367,7 +363,7 @@ public class StockFrame extends javax.swing.JFrame {
         LoginFrame loginScreen = new LoginFrame();
         loginScreen.setVisible(true);
         log("LOGOUT",userName);
-    }//GEN-LAST:event_btnLogOutMouseClicked
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
     
     public void setUserName(String name) {
